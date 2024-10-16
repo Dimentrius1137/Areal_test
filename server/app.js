@@ -23,7 +23,7 @@ app.listen(PORT, async () => {
         console.log("база данных синхронизирована")
     }
     catch (e) {
-        console.log(`ошибка^ ${e}`);
+        console.log(`ошибка ${e}`);
     }
 })
 
