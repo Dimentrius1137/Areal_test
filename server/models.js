@@ -14,7 +14,7 @@ const ArticleModel = db.connect.define(
       allowNull: false
     },
     articleText: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       maxLength: 900,
     }
@@ -33,7 +33,7 @@ const CommentModel = db.connect.define(
       allowNull: false
     },
     commentText: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       maxLength: 900,
     },
@@ -45,7 +45,6 @@ const CommentModel = db.connect.define(
     timestamps: true
   },
 );
-
 ArticleModel.hasMany(CommentModel);
 CommentModel.belongsTo(ArticleModel, {foreignKey: 'ArticleId'});
 

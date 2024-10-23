@@ -4,6 +4,8 @@ const cors = require("cors")
 const db = require('./db.js');
 const router = require('./appRoutes.js');
 const models = require('./models.js');
+const { where, Op } = require("sequelize");
+const { group } = require("console");
 
 const PORT = process.env.PORT || 5000;
 
@@ -15,12 +17,30 @@ app.use(cors())
 app.use('/articles', router);
 app.use('/article', router);
 
+app.get('/analytic/comments', async (req, res) => {
+    const { dateFrom, dateTo } = req.query;
+    const articles = await models.ArticleModel.findAll({
+        include: {
+          model: models.CommentModel,
+          attributes: ['id', 'commentText', 'createdAt'],
+          where: { 
+            createdAt: {
+                [Op.between]: [dateFrom, dateTo]
+            }
+          },
+        },
+        group: ['Articles.id', 'Comments.id']
+      });
+    res.json(articles)
+})
+
 app.listen(PORT, async () => {
     try {
         await db.connect.authenticate();
         console.log("база данных подключена")
         await db.connect.sync();
-        console.log("база данных синхронизирована")
+        console.log("база данных синхронизирована");
+
     }
     catch (e) {
         console.log(`ошибка ${e}`);

@@ -5,8 +5,12 @@ const models = require('./models.js');
 module.exports.getComments = async (req, res) => {
     const articleId = req.params.id;
     try {
+        //выборка из статьи содержащей комментарии относящиеся к ней
         let comments = await models.ArticleModel.findAll({ where: { id: articleId }, include: models.CommentModel });
-      
+        /* 
+        Выборка всех комментов
+        let comments = await models.CommentModel.findAll({ where: { ArticleId: articleId }});
+        */
         res.status(200).json(comments)
     }
     catch (e) {
